@@ -1,9 +1,9 @@
-var app = require('../lib/application');
-var pomelo = require('../');
-var should = require('should');
+var app = require('../lib/application'),
+  pomelo = require('../'),
+  should = require('should');
 
-var WAIT_TIME = 1000;
-var mockBase = process.cwd() + '/test';
+var WAIT_TIME = 1000,
+  mockBase = process.cwd() + '/test';
 
 describe('application test', function(){
   afterEach(function() {
@@ -22,12 +22,14 @@ describe('application test', function(){
     it('should play the role of normal set and get', function() {
       should.not.exist(app.get('some undefined key'));
 
-      var key = 'some defined key', value = 'some value';
+      var key = 'some defined key',
+        value = 'some value';
+
       app.set(key, value);
       value.should.equal(app.get(key));
     });
 
-    it('should return the value if pass just one parameter to the set method', function() {
+    it('should return the value if passing a parameter to the set method', function() {
       var key = 'some defined key', value = 'some value';
       should.not.exist(app.set(key));
       app.set(key, value);
@@ -36,7 +38,7 @@ describe('application test', function(){
   });
 
   describe("#enable and disable", function() {
-    it('should play the role of enable and disable', function() {
+    it('should enable and disable a property', function() {
       var key = 'some enable key';
       app.enabled(key).should.be.false;
       app.disabled(key).should.be.true;
@@ -51,9 +53,11 @@ describe('application test', function(){
     });
   });
 
-  describe("#compoent", function() {
-    it('should load the component and fire their lifecircle callback by app.start, app.afterStart, app.stop', function(done) {
-      var startCount = 0, afterStartCount = 0, stopCount = 0;
+  describe("#component", function() {
+    it('should load the component and fire lifecycle callbacks app.start, app.afterStart, app.stop', function(done) {
+      var startCount = 0,
+        afterStartCount = 0,
+        stopCount = 0;
 
       var mockComponent = {
         start: function(cb) {
@@ -96,12 +100,12 @@ describe('application test', function(){
     });
 
     it('should access the component with a name by app.components.name after loaded', function() {
-      var key1 = 'key1', comp1 = {content: 'some thing in comp1'};
-      var comp2 = {name: 'key2', content: 'some thing in comp2'};
-      var key3 = 'key3';
-      var comp3 = function() {
-        return {content: 'some thing in comp3', name: key3};
-      };
+      var key1 = 'key1', comp1 = {content: 'some thing in comp1'},
+        comp2 = {name: 'key2', content: 'some thing in comp2'},
+        key3 = 'key3',
+        comp3 = function() {
+          return {content: 'some thing in comp3', name: key3};
+        };
 
       app.init({base: mockBase});
       app.load(key1, comp1);
@@ -114,9 +118,9 @@ describe('application test', function(){
     });
 
     it('should ignore duplicated components', function() {
-      var key = 'key';
-      var comp1 = {content: 'some thing in comp1'};
-      var comp2 = {content: 'some thing in comp2'};
+      var key = 'key',
+        comp1 = {content: 'some thing in comp1'},
+        comp2 = {content: 'some thing in comp2'};
 
       app.init({base: mockBase});
       app.load(key, comp1);
@@ -128,7 +132,7 @@ describe('application test', function(){
   });
 
   describe('#filter', function() {
-    it('should add before filter and could fetch it later', function() {
+    it('should add before filter and be able to fetch it later', function() {
       var filters = [
         function() {console.error('filter1');},
         function() {}
@@ -137,19 +141,23 @@ describe('application test', function(){
       app.init({base: mockBase});
 
       var i, l;
+
       for(i=0, l=filters.length; i<l; i++) {
         app.before(filters[i]);
       }
 
       var filters2 = app.get('__befores__');
+
       should.exist(filters2);
+
       filters2.length.should.equal(filters.length);
+
       for(i=0, l=filters2.length; i<l; i++) {
         filters2[i].should.equal(filters[i]);
       }
     });
 
-    it('should add after filter and could fetch it later', function() {
+    it('should add after filter and be able to fetch it later', function() {
       var filters = [
         function() {console.error('filter1');},
         function() {}
@@ -170,7 +178,7 @@ describe('application test', function(){
       }
     });
 
-    it('should add filter and could fetch it from before and after filter later', function() {
+    it('should add before and after filter and be able to fetch it later', function() {
       var filters = [
         function() {console.error('filter1');},
         function() {}
@@ -200,7 +208,7 @@ describe('application test', function(){
   });
 
    describe('#globalFilter', function() {
-    it('should add before global filter and could fetch it later', function() {
+    it('should add before global filter and be able to fetch it later', function() {
       var filters = [
         function() {console.error('global filter1');},
         function() {}
@@ -221,7 +229,7 @@ describe('application test', function(){
       }
     });
 
-    it('should add after global filter and could fetch it later', function() {
+    it('should add after global filter and be able to fetch it later', function() {
       var filters = [
         function() {console.error('filter1');},
         function() {}
@@ -242,7 +250,7 @@ describe('application test', function(){
       }
     });
 
-    it('should add filter and could fetch it from before and after filter later', function() {
+    it('should add before and after filters and be able to fetch it later', function() {
       var filters = [
         function() {console.error('filter1');},
         function() {}
@@ -272,9 +280,12 @@ describe('application test', function(){
   });
 
   describe('#configure', function() {
-    it('should execute the code block wtih the right environment', function() {
-      var proCount = 0, devCount = 0;
-      var proEnv = 'production', devEnv = 'development', serverType = 'server';
+    it('should execute the code block for the right environment', function() {
+      var proCount = 0,
+        devCount = 0,
+        proEnv = 'production',
+        devEnv = 'development',
+        serverType = 'server';
 
       app.init({base: mockBase});
       app.set('serverType', serverType);
@@ -302,7 +313,7 @@ describe('application test', function(){
       devCount.should.equal(1);
     });
 
-    it('should execute the code block wtih the right server', function() {
+    it('should execute the code block for the right server', function() {
       var server1Count = 0, server2Count = 0;
       var proEnv = 'production', serverType1 = 'server1', serverType2 = 'server2';
 
@@ -334,10 +345,11 @@ describe('application test', function(){
   });
 
   describe('#route', function() {
-    it('should add route record and could fetch it later', function() {
-      var type1 = 'area', type2 = 'connector';
-      var func1 = function() {console.log('func1');};
-      var func2 = function() {console.log('func2');};
+    it('should add route record and be able to fetch it later', function() {
+      var type1 = 'area',
+        type2 = 'connector',
+        func1 = function() {console.log('func1');},
+        func2 = function() {console.log('func2');};
 
       app.init({base: mockBase});
 
@@ -382,7 +394,7 @@ describe('application test', function(){
       app.transaction('test', conditions, handlers, 5);
     });
 
-    it('shoud execute conditions with error and do not execute handlers', function() {
+    it('should execute conditions with error and NOT execute handlers', function() {
       var conditions = {
         test1: function(cb) {
           console.log('condition1');
@@ -414,7 +426,7 @@ describe('application test', function(){
   describe('#add and remove servers', function() {
     it('should add servers and emit event and fetch the new server info by get methods', function(done) {
       var newServers = [
-        {id: 'connector-server-1', serverType: 'connecctor', host: '127.0.0.1', port: 1234, clientPort: 3000, frontend: true},
+        {id: 'connector-server-1', serverType: 'connector', host: '127.0.0.1', port: 1234, clientPort: 3000, frontend: true},
         {id: 'area-server-1', serverType: 'area', host: '127.0.0.1', port: 2234}
       ];
       app.init({base: mockBase});
@@ -466,7 +478,7 @@ describe('application test', function(){
       app.addServers(newServers);
     });
 
-    it('should remove server info and emit event', function(done) {
+    it('should remove server info and emit pomelo.events.REMOVE_SERVERS event', function(done) {
       var newServers = [
         {id: 'connector-server-1', serverType: 'connecctor', host: '127.0.0.1', port: 1234, clientPort: 3000, frontend: true},
         {id: 'area-server-1', serverType: 'area', host: '127.0.0.1', port: 2234},
@@ -538,7 +550,7 @@ describe('application test', function(){
   });
 
   describe('#beforeStopHook', function() {
-    it('should be called before application stopped.', function(done) {
+    it('should be called immediately before application stops.', function(done) {
       var count = 0;
       app.init({base: mockBase});
       app.beforeStopHook(function() {
@@ -560,6 +572,7 @@ describe('application test', function(){
       }, WAIT_TIME);
     });
   });
+
   describe('#use', function() {
     it('should exist plugin component and event', function(done) {
       var plugin = {

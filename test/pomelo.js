@@ -1,17 +1,15 @@
-var pomelo = require('../');
-var should = require('should');
-var mockBase = process.cwd() + '/test';
+var pomelo = require('../'),
+  should = require('should'),
+  mockBase = process.cwd() + '/test';
 
 describe('pomelo', function() {
   describe('#createApp', function() {
-    it('should create and get app, be the same instance', function(done) {
+    it('should create and get app and both should be the same instance', function() {
       var app = pomelo.createApp({base: mockBase});
       should.exist(app);
 
-      var app2 = pomelo.app;
-      should.exist(app2);
-      should.strictEqual(app, app2);
-      done();
+      should.exist(pomelo.app);
+      should.strictEqual(app, pomelo.app);
     });
   });
 });

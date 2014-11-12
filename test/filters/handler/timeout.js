@@ -2,11 +2,13 @@ var should = require('should');
 var timeoutFilter = require('../../../lib/filters/handler/timeout');
 var FilterService = require('../../../lib/common/service/filterService');
 var util = require('util');
+
 var mockSession = {
   key : "123"
 };
 
 var WAIT_TIME = 100;
+
 describe("#serialFilter",function(){
   it("should do before filter ok",function(done){
     var service = new FilterService();
