@@ -16,7 +16,7 @@ var mockApp = {
 };
 
 describe('connection service test', function() {
-  describe('#addLoginedUser', function() {
+  describe('#addLoggedInUser', function() {
     it('should add logined user and could fetch it later', function() {
       var service = new ConnectionService(mockApp);
       should.exist(service);
@@ -24,7 +24,7 @@ describe('connection service test', function() {
 
       var uid = 'uid1';
       var info = {msg: 'some other message'};
-      service.addLoginedUser(uid, info);
+      service.addLoggedInUser(uid, info);
 
       service.loginedCount.should.equal(1);
       var record = service.logined[uid];
@@ -52,7 +52,7 @@ describe('connection service test', function() {
 
       var uid = 'uid1';
       var info = {msg: 'some other message'};
-      service.addLoginedUser(uid, info);
+      service.addLoggedInUser(uid, info);
 
       service.loginedCount.should.equal(1);
       var record = service.logined[uid];
@@ -99,7 +99,7 @@ describe('connection service test', function() {
 
       var uid = 'uid1';
       var info = {msg: 'some other message'};
-      service.addLoginedUser(uid, info);
+      service.addLoggedInUser(uid, info);
 
       service.connCount.should.equal(1);
       service.logined[uid].should.eql(info);
@@ -120,8 +120,8 @@ describe('connection service test', function() {
     service.increaseConnectionCount();
     service.increaseConnectionCount();
 
-    service.addLoginedUser(uid1, info1);
-    service.addLoginedUser(uid2, info2);
+    service.addLoggedInUser(uid1, info1);
+    service.addLoggedInUser(uid2, info2);
 
 
     var sinfo = service.getStatisticsInfo();
